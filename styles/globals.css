@@ -15,8 +15,53 @@
     --background-end-rgb: 0, 0, 0;
   }
 }
-
+@font-face {
+  font-family: jet;
+  src: url("/assests/fonts/en/jet/JetBrainsMono-Regular.ttf")format("truetype");
+  font-weight: 500;
+}
+@font-face {
+  font-family: jet;
+  src: url("/assests/fonts/en/jet/JetBrainsMono-Medium.ttf")format("truetype");
+  font-weight: 600;
+}
+@font-face {
+  font-family: jet;
+  src: url("/assests/fonts/en/jet/JetBrainsMono-SemiBold.ttf")format("truetype");
+  font-weight: 700;
+}
+@font-face {
+  font-family: jet;
+  src: url("/assests/fonts/en/jet/JetBrainsMono-Bold.ttf")format("truetype");
+  font-weight: 800;
+}
+@font-face {
+  font-family: jet;
+  src: url("/assests/fonts/en/jet/JetBrainsMono-ExtraBold.ttf")format("truetype");
+  font-weight: 900;
+}
+@font-face {
+  font-family: jet;
+  src: url("/assests/fonts/en/jet/JetBrainsMono-ExtraLight.ttf")format("truetype");
+  font-weight: 200;
+}
+@font-face {
+  font-family: jet;
+  src: url("/assests/fonts/en/jet/JetBrainsMono-Light.ttf")format("truetype");
+  font-weight: 400;
+}
+@font-face {
+  font-family: jet;
+  src: url("/assests/fonts/en/jet/JetBrainsMono-Thin.ttf")format("truetype");
+  font-weight: 200;
+}
+@font-face {
+  font-family: jet;
+  src: url("/assests/fonts/en/jet/JetBrainsMonoNL-ExtraLight.ttf")format("truetype");
+  font-weight: 100;
+}
 body {
+  font-family: jet;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
