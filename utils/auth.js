@@ -7,7 +7,7 @@ import { sign, verify } from "jsonwebtoken";
 
  function generateToken(tokenData) {
     const token=sign({...tokenData},process.env.JSON_SECRET,{
-        expiresIn:"48h"
+        expiresIn:"1h"
     })
     return token;
 }

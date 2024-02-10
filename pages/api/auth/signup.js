@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import connectToDb from "@/configs/db";
 import { check } from "@/Validator/User";
 import UserModel from "@/models/User";
@@ -33,7 +32,7 @@ export default async function handler(req, res) {
             serialize("token", newToken, {
               httpOnly: true,
               path:"/",
-              maxAge: 60 * 60 * 24 * 2,
+              maxAge: 60 * 60 ,
             }),
           )
           .status(201)
