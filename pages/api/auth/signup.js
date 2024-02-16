@@ -1,5 +1,5 @@
 import connectToDb from "@/configs/db";
-import { check } from "@/Validator/User";
+import { check } from "@/validator/User";
 import UserModel from "@/models/User";
 import { generateToken, hashPassword } from "@/utils/auth";
 import { serialize } from "cookie";

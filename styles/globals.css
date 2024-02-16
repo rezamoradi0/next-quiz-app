@@ -61,6 +61,8 @@
   font-weight: 100;
 }
 body {
+  position: relative;
+  overflow: hidden;
   font-family: jet;
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

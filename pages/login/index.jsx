@@ -41,7 +41,7 @@ function index() {
     });
     dispatch({type:"loading"});
     if(response.status===200){
-      router.forward("/dashboard");
+      router.replace("/dashboard");
     }
 
   

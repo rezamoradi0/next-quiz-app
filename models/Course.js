@@ -9,10 +9,10 @@ const schema = mongoose.Schema(
     description: {
       type: String,
       required: true,
-    },
+    }
   },
   { timestamps: true },
 );
 
-const model = mongoose.models.Course || mongoose.model("Course", schema);
+const model = mongoose.models?.Course || mongoose.model("Course", schema);
 export default model;

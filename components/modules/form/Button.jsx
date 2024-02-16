@@ -1,8 +1,9 @@
 import { twMerge } from "tailwind-merge";
 import {motion} from "framer-motion"
-function Button({ text = "button", type = "button", className = "" }) {
+function Button({ text = "button", type = "button", className = "" ,onClick=()=>{}}) {
   return (
     <motion.button
+    onClick={onClick}
     initial={{opacity:0,y:20,borderBottom:10}}
     animate={{opacity:1,y:0,borderBottom:10}}
     transition={{duration:0.2}}
