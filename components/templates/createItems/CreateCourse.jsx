@@ -41,7 +41,7 @@ function CreateCourse() {
           <div className="flex w-full items-stretch justify-between gap-x-8">
             <ItemsTarget
               header={"Levels "}
-              dataArray={[{ name: "Start", id: 1 }]}
+         
             />
 
             <ItemsOrigin

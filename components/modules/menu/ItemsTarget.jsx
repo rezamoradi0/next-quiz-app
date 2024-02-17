@@ -3,7 +3,7 @@ import TargetItem from "./TargetItem";
 import TargetPlace from "./TargetPlace";
 import PopupAlert from "../popup/PopupAlert";
 
-function ItemsTarget({ dataArray, header }) {
+function ItemsTarget({ dataArray = [], header }) {
   const [listArray, setListArray] = useState(dataArray);
   const [popup, setPopup] = useState(false);
   const dropHandler = useCallback(
@@ -17,13 +17,16 @@ function ItemsTarget({ dataArray, header }) {
         const newListArray = listArray.toSpliced(itemIndex, 1);
         newListArray.splice(index, 0, itemData);
         setListArray(newListArray);
-      }
-      else if(itemIndex>-1 && itemData.onDropRemove && index!=0 &&!index){
+      } else if (
+        itemIndex > -1 &&
+        itemData.onDropRemove &&
+        index != 0 &&
+        !index
+      ) {
         const newListArray = listArray.toSpliced(itemIndex, 1);
         newListArray.splice(newListArray.length, 0, itemData);
         setListArray(newListArray);
-      }
-      else if (itemIndex > -1) {
+      } else if (itemIndex > -1) {
         setPopup("Duplicated Item !!");
         return;
       } else if (index >= 0) {
@@ -41,12 +44,14 @@ function ItemsTarget({ dataArray, header }) {
     },
     [listArray],
   );
-  const removeHandler=(id)=>{
-    const itemIndex=listArray.findIndex((item)=>{
-      return item.id==id;
-    })
-    setListArray(listArray.toSpliced(itemIndex,1));
-  }
+  const removeHandler = (id) => {
+    const itemIndex = listArray.findIndex((item) => {
+      return item.id == id;
+    });
+    if (itemIndex >= 0) {
+      setListArray(listArray.toSpliced(itemIndex, 1));
+    }
+  };
   useEffect(() => {
     console.log("HERE");
     if (!popup) {
@@ -79,7 +84,11 @@ function ItemsTarget({ dataArray, header }) {
                 key={crypto.randomUUID()}
                 onDropHandler={dropHandler}
               />
-              <TargetItem key={crypto.randomUUID()} item={item} removeHandler={removeHandler}/>
+              <TargetItem
+                key={crypto.randomUUID()}
+                item={item}
+                removeHandler={removeHandler}
+              />
             </>
           );
         })}

@@ -15,7 +15,9 @@ function TargetItem({ item, removeHandler = () => {} }) {
       <span>
         <span
           className="text-xs mx-4 h-12 transition-all hover:bg-red-600 w-12 rounded-lg bg-red-400 p-1 text-gray-100 opacity-0 group-hover:opacity-100"
-          onClick={removeHandler}
+          onClick={()=>{
+            removeHandler(item.id)
+          }}
         >
           Remove
         </span>
