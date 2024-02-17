@@ -4,7 +4,6 @@ import TextInputLegend from "@/components/modules/form/TextInputLegend";
 import TextArea from "@/components/modules/form/TextArea";
 import ButtonAddPanelItem from "@/components/modules/form/ButtonAddPanelItem";
 import Button from "@/components/modules/form/Button";
-import LevelItem from "@/components/modules/level/LevelItem";
 import ItemsOrigin from "@/components/modules/menu/ItemsOrigin";
 import ItemsTarget from "@/components/modules/menu/ItemsTarget";
 

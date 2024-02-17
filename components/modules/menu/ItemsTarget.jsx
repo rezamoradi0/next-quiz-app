@@ -11,13 +11,19 @@ function ItemsTarget({ dataArray, header }) {
       const itemData = JSON.parse(event.dataTransfer.getData("text"));
       const itemIndex = listArray.findIndex((item) => item.id == itemData.id);
       console.log("itemIndex ", itemIndex);
+      console.log("index ", index);
+      console.log("itemData.onDropRemove ", itemData.onDropRemove);
       if (itemIndex > -1 && itemData.onDropRemove && index >= 0) {
-        console.log(itemData);
-        console.log(itemIndex);
         const newListArray = listArray.toSpliced(itemIndex, 1);
         newListArray.splice(index, 0, itemData);
         setListArray(newListArray);
-      } else if (itemIndex > -1) {
+      }
+      else if(itemIndex>-1 && itemData.onDropRemove && index!=0 &&!index){
+        const newListArray = listArray.toSpliced(itemIndex, 1);
+        newListArray.splice(newListArray.length, 0, itemData);
+        setListArray(newListArray);
+      }
+      else if (itemIndex > -1) {
         setPopup("Duplicated Item !!");
         return;
       } else if (index >= 0) {
@@ -35,6 +41,12 @@ function ItemsTarget({ dataArray, header }) {
     },
     [listArray],
   );
+  const removeHandler=(id)=>{
+    const itemIndex=listArray.findIndex((item)=>{
+      return item.id==id;
+    })
+    setListArray(listArray.toSpliced(itemIndex,1));
+  }
   useEffect(() => {
     console.log("HERE");
     if (!popup) {
@@ -67,7 +79,7 @@ function ItemsTarget({ dataArray, header }) {
                 key={crypto.randomUUID()}
                 onDropHandler={dropHandler}
               />
-              <TargetItem key={crypto.randomUUID()} item={item} />
+              <TargetItem key={crypto.randomUUID()} item={item} removeHandler={removeHandler}/>
             </>
           );
         })}
