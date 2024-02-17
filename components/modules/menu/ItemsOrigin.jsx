@@ -1,15 +1,17 @@
-function ItemsOrigin({ dataArray, header }) {
+import OriginItem from "./OriginItem";
+
+function ItemsOrigin({ dataArray, header ,children}) {
   return (
-    <div className="flex flex-col border-zinc-800 border rounded-lg  p-4 h-full grow">
-      <div>{header}</div>
-      <div className="flex flex-col gap-4 h-full">
-        {dataArray.map((item,i) => {
-          return <div draggable  key={i} className=" bg-zinc-700 px-4 py-2 rounded-lg cursor-pointer hover:pl-12 transition-all duration-500 hover:bg-zinc-600" >{item.name}</div>;
+    <div className="flex h-full grow w-full flex-col rounded-lg  border border-zinc-800 p-4">
+      <div className="mb-3">{header}</div>
+      <div className="flex h-full flex-col gap-4 ">
+        {dataArray.map((item, i) => {
+          return <OriginItem key={i} item={item} />;
         })}
       </div>
+      {children}
     </div>
   );
 }
 
 export default ItemsOrigin;
-

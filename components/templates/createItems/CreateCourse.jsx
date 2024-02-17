@@ -34,28 +34,28 @@ function CreateCourse() {
           <TextArea tab={"توضیحات (Fa)"} id={"descriptionFa"} dir={"rtl"} />
         </div>
 
-        <div className="w-full gap-y-4 flex flex-col">
+        <div className="flex w-full flex-col gap-y-4">
           <div className="flex  items-center justify-between ">
             <p className="my-4">Levels</p>
             <ButtonAddPanelItem text="Level" />
           </div>
-          <div className="flex w-full justify-between gap-x-8">
+          <div className="flex w-full items-stretch justify-between gap-x-8">
             <ItemsTarget
-              header={"Selected Courses"}
-              dataArray={[
-                { name: "Intern",id:1 }
-              ]}
+              header={"Levels "}
+              dataArray={[{ name: "Start", id: 1 }]}
             />
 
-<ItemsOrigin
-              header={"Select One Course"}
+            <ItemsOrigin
+              header={"Available  Levels"}
               dataArray={[
-                { name: "Intern" },
-                { name: "Junior" },
-                { name: "MidLevel" },
-                { name: "Senior" },
+                { name: "Intern", id: 2 },
+                { name: "Junior", id: 3 },
+                { name: "MidLevel", id: 4 },
+                { name: "Senior", id: 5 },
               ]}
-            />
+            >
+              <Button className="my-4 bg-yellow-500" text="Create Level"/>
+              </ItemsOrigin>
           </div>
         </div>
       </form>
