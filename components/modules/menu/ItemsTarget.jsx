@@ -53,7 +53,6 @@ function ItemsTarget({ dataArray = [], header }) {
     }
   };
   useEffect(() => {
-    console.log("HERE");
     if (!popup) {
       return;
     } else {
@@ -75,9 +74,9 @@ function ItemsTarget({ dataArray = [], header }) {
         }}
         className="flex h-full grow flex-col gap-y-1"
       >
-        {listArray.map((item, i) => {
+        {listArray?.length>0&&listArray.map((item, i) => {
           return (
-            <>
+            < >
               {" "}
               <TargetPlace
                 index={i}

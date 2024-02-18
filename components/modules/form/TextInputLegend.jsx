@@ -1,21 +1,26 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 
-function TextInputLegend({
+const TextInputLegend=forwardRef(function  TextInputLegend({
   placeholder = "placeholder",
   dir = "ltr",
   callback,
-}) {
-  const inputRef = useRef(null);
+  clear=""
+},ref) {
+  // const inputRef = useRef(ref);
   const [text, setText] = useState("");
   const [isFocus, setIsFocus] = useState(false);
   const clickHandler=useCallback(()=> {
-   inputRef.current.focus();
+    ref.current.focus();
   },[])
+
   useEffect(() => {
     if (callback) {
-      callback(callback);
+      callback(text);
     }
   }, [text]);
+  useEffect(()=>{
+    setText("");
+  },[clear])
   return (
     <div
       dir={dir}
@@ -28,9 +33,9 @@ function TextInputLegend({
         {placeholder}
       </span>
       <input
-        ref={inputRef}
+        ref={ref}
         type="text"
-        className={`${isFocus || (text && !isFocus) ? "h-1/2" : "h-full"} relative  border-none bg-transparent outline-none`}
+        className={`${isFocus || (text && !isFocus) ? "h-1/2" : "h-full"} relative  border-none bg-transparent outline-none w-full`}
         value={text}
         onChange={(e) => setText(e.target.value)}
         onFocus={() => setIsFocus(true)}
@@ -39,5 +44,5 @@ function TextInputLegend({
     </div>
   );
 }
-
+ )
 export default TextInputLegend;

@@ -11,6 +11,7 @@ import PanelBody from "@/components/modules/panel/PanelBody";
 import { useRouter } from "next/router";
 import CreateCourse from "@/components/templates/createItems/CreateCourse";
 import PopupFull from "@/components/modules/popup/PopupFull";
+import CreateQuestion from "@/components/templates/createItems/CreateQuestion";
 
 const variantsDescription = {
   open: { opacity: [0, 0.4, 1] },
@@ -41,7 +42,13 @@ function AdminPanel({ userData, menuData }) {
           </PopupFull>,
         );
         break;
-
+        case "question":
+          setCreateComponent(
+            <PopupFull>
+              <CreateQuestion />
+            </PopupFull>,
+          );
+          break;
       default:
         setCreateComponent(null);
         break;
