@@ -5,7 +5,7 @@ import CourseModel from "@/models/Course";
 import connectToDb from "@/configs/db";
 import Head from "next/head";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import ButtonLink from "@/components/modules/form/ButtonLink";
 import PanelBody from "@/components/modules/panel/PanelBody";
 import { useRouter } from "next/router";
@@ -42,21 +42,19 @@ function AdminPanel({ userData, menuData }) {
           </PopupFull>,
         );
         break;
-        case "question":
-          setCreateComponent(
-            <PopupFull>
-              <CreateQuestion />
-            </PopupFull>,
-          );
-          break;
+      case "question":
+        setCreateComponent(
+          <PopupFull>
+            <CreateQuestion />
+          </PopupFull>,
+        );
+        break;
       default:
         setCreateComponent(null);
         break;
     }
   }, [router.asPath]);
-  useEffect(() => {
-    // menuDataState[selectedMenu].data=[{name:"TEst"},{name:"TEst"},{name:"TEst"}]
-  }, [selectedMenu]);
+
   return (
     <main className="flex min-h-screen w-full flex-col bg-zinc-900 p-8">
       <Head>
@@ -137,7 +135,6 @@ export async function getServerSideProps(context) {
           name: "Courses",
           queryAddress: "create=course",
           index: 0,
-          data: coursesDataObj,
         },
         { name: "Levels", queryAddress: "create=level", index: 1 },
         { name: "Lessons", queryAddress: "create=lesson", index: 2 },

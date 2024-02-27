@@ -24,5 +24,11 @@ const updateQuestion = async (data) => {
     console.log(err.message);
   }
 };
+const getItems = async (queryAddress, pageNumber = 1,limit=5) => {
+  const response = await fetch(
+    `${API_ADDRESS}/admin/items?type=${queryAddress}&page=${pageNumber}&limit=${limit}`,
+  );
 
-export { createQuestion, updateQuestion };
+  return response;
+};
+export { createQuestion, updateQuestion, getItems };

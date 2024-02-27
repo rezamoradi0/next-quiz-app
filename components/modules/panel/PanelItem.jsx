@@ -1,4 +1,4 @@
-function PanelItem({ text = "Panel Item", className = "" }) {
+function PanelItem({ text = "Panel Item", className = "",data }) {
   return (
     <div
       className="group w-full cursor-pointer rounded-xl bg-transparent p-4
