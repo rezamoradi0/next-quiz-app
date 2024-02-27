@@ -8,22 +8,27 @@ import TextInputLegend from "@/components/modules/form/TextInputLegend";
 import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { createQuestion, updateQuestion } from "@/api/services/adminServices";
-// قرار بود تمیز باشه :/ 
-function CreateQuestion() {
-  const [answerType, setAnswerType] = useState("one");
+// قرار بود تمیز باشه :/
+
+function CreateQuestion({ defaultData, backOnClick}) {
+  const [answerType, setAnswerType] = useState(defaultData?.answerType || "one");
   const [questionComponent, setQuestionComponent] = useState();
   const textAnswerFaRef = useRef(null);
   const textAnswerEnRef = useRef(null);
   const descriptionEnRef = useRef(null);
   const descriptionFaRef = useRef(null);
 
-  const [descriptionEn, setDescriptionEn] = useState("");
-  const [descriptionFa, setDescriptionFa] = useState("");
+  const [descriptionEn, setDescriptionEn] = useState(
+    defaultData?.descriptionEn || "",
+  );
+  const [descriptionFa, setDescriptionFa] = useState(
+    defaultData?.descriptionFa || "",
+  );
 
   const [save, setSave] = useState("Save");
   const dataRef = useRef({});
 
-  const [questionId, setQuestionId] = useState(false);
+  const [questionId, setQuestionId] = useState(defaultData?._id || false);
   useEffect(() => {
     setSave("Save");
   }, [descriptionFa, descriptionEn, answerType]);
@@ -50,10 +55,10 @@ function CreateQuestion() {
       data.answersIndex = JSON.stringify(dataRef.current.answersIndex);
     }
     if (questionId) {
-      data.questionId=questionId;
+      data.questionId = questionId;
       const response = await updateQuestion(data);
-      console.log(response.status);
       if (response.status == 200) {
+   
         setSave("Updated !");
       } else {
         setSave("Save");
@@ -61,7 +66,7 @@ function CreateQuestion() {
     } else {
       const response = await createQuestion(data);
       if (response.status == 201) {
-        const {id}=await response.json();
+        const { id } = await response.json();
         setQuestionId(id);
         setSave("Saved !");
       } else {
@@ -72,7 +77,15 @@ function CreateQuestion() {
   useEffect(() => {
     switch (answerType) {
       case "multi":
-        setQuestionComponent(<RatioList setData={setData} type="multi" />);
+        setQuestionComponent(
+          <RatioList
+            setData={setData}
+            type="multi"
+            defaultAnswers={defaultData?.answersIndex || null}
+            defaultListItems={defaultData?.answersArray || null}
+            lastId={defaultData?.answersArray.length ||null}
+          />,
+        );
         break;
       case "text":
         setQuestionComponent(
@@ -91,7 +104,15 @@ function CreateQuestion() {
         break;
       //cast "one"
       default:
-        setQuestionComponent(<RatioList setData={setData} type="one" />);
+        setQuestionComponent(
+          <RatioList
+            setData={setData}
+            type="one"
+            defaultAnswers={defaultData?.answersIndex || null}
+            defaultListItems={defaultData?.answersArray || null}
+            lastId={defaultData?.answersArray.length ||null}
+          />,
+        );
         break;
     }
   }, [answerType]);
@@ -104,8 +125,14 @@ function CreateQuestion() {
       className="relative flex   w-full flex-col justify-start  rounded-xl border border-zinc-700 bg-zinc-900 "
     >
       <div className=" sticky -top-4 flex min-h-16 items-center justify-between rounded-lg border-b border-b-zinc-700 bg-zinc-900 p-4">
-        <ButtonBack />
-        <span className="text-lg">Add New Question</span>
+        {backOnClick ? (
+          <Button text="close" onClick={backOnClick} />
+        ) : (
+          <ButtonBack />
+        )}
+        <span className="text-lg">
+          {questionId? "Edit This Question" : "Add New Question"}
+        </span>
         <Button
           text={save}
           onClick={saveQuestion}
@@ -113,7 +140,10 @@ function CreateQuestion() {
         />
       </div>
       <form className="flex w-full flex-col items-start justify-start gap-y-8 px-20 py-4">
-        <p className="my-4">General Information</p>
+        <div className="flex w-full items-center justify-between">
+          <p className="my-4">General Information</p>
+          {questionId && <p>ID : {questionId}</p>}
+        </div>
         <div className="flex w-full  items-center  gap-x-4">
           <TextArea
             rows={5}
@@ -121,6 +151,7 @@ function CreateQuestion() {
             id={"descriptionEn"}
             ref={descriptionEnRef}
             onChange={setDescriptionEn}
+            value={descriptionEn}
           />
           <TextArea
             rows={5}
@@ -129,6 +160,7 @@ function CreateQuestion() {
             dir={"rtl"}
             ref={descriptionFaRef}
             onChange={setDescriptionFa}
+            value={descriptionFa}
           />
         </div>
         <p className="my-4">Answer Type </p>

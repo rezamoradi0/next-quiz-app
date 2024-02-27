@@ -3,12 +3,12 @@ import RatioGroup from "./RatioGroup";
 import RatioButton from "./RatioButton";
 import TextInputLegend from "./TextInputLegend";
 import Button from "./Button";
-function RatioList({type="one" ,setData}) {
-  const [listItems, setListItems] = useState([]);
-  const [answersIndex, setAnswersId] = useState([]);
+function RatioList({type="one" ,setData,defaultListItems,defaultAnswers,lastId}) {
+  const [listItems, setListItems] = useState(defaultListItems||[]);
+  const [answersIndex, setAnswersId] = useState(defaultAnswers||[]);
   const answerTextEnRef = useRef(null);
   const answerTextFaRef = useRef(null);
-  const lastIdRef=useRef(0);
+  const lastIdRef=useRef(lastId||0);
   const [clearTexts, setClearTexts] = useState(false);
   useEffect(()=>{
    setParentData();

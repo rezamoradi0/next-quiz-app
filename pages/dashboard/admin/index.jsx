@@ -89,7 +89,7 @@ function AdminPanel({ userData, menuData }) {
         variants={variantsDescription}
         animate={isAnimDescription ? "open" : "closed"}
         transition={{ duration: 2 }}
-        className="flex w-1/2 flex-col gap-4"
+        className="flex w-full flex-col gap-4"
       >
         <PanelBody panelData={menuDataState[selectedMenu]} />
       </motion.div>
