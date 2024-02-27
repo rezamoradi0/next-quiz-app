@@ -4,26 +4,113 @@ import RatioButton from "@/components/modules/form/RatioButton";
 import RatioGroup from "@/components/modules/form/RatioGroup";
 import RatioList from "@/components/modules/form/RatioList";
 import TextArea from "@/components/modules/form/TextArea";
+import TextInputLegend from "@/components/modules/form/TextInputLegend";
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { createQuestion, updateQuestion } from "@/api/services/adminServices";
+// قرار بود تمیز باشه :/ 
 function CreateQuestion() {
   const [answerType, setAnswerType] = useState("one");
-  const [questionComponent,setQuestionComponent]=useState();
-  useEffect(()=>{
-    setQuestionComponent(<RatioList />);
+  const [questionComponent, setQuestionComponent] = useState();
+  const textAnswerFaRef = useRef(null);
+  const textAnswerEnRef = useRef(null);
+  const descriptionEnRef = useRef(null);
+  const descriptionFaRef = useRef(null);
 
-  },[answerType])
+  const [descriptionEn, setDescriptionEn] = useState("");
+  const [descriptionFa, setDescriptionFa] = useState("");
+
+  const [save, setSave] = useState("Save");
+  const dataRef = useRef({});
+
+  const [questionId, setQuestionId] = useState(false);
+  useEffect(() => {
+    setSave("Save");
+  }, [descriptionFa, descriptionEn, answerType]);
+  function setData(data) {
+    setSave("Save");
+    dataRef.current = data;
+  }
+  async function saveQuestion() {
+    if (save === "Saved !") {
+      console.log("NoChange");
+      return;
+    }
+    let data = {
+      answerType,
+      descriptionEn: descriptionEnRef.current.value,
+      descriptionFa: descriptionFaRef.current.value,
+    };
+
+    if (answerType === "text") {
+      data.answerTextEn = textAnswerEnRef.current.value;
+      data.answerTextFa = textAnswerFaRef.current.value;
+    } else {
+      data.answersArray = JSON.stringify(dataRef.current.listItems);
+      data.answersIndex = JSON.stringify(dataRef.current.answersIndex);
+    }
+    if (questionId) {
+      data.questionId=questionId;
+      const response = await updateQuestion(data);
+      console.log(response.status);
+      if (response.status == 200) {
+        setSave("Updated !");
+      } else {
+        setSave("Save");
+      }
+    } else {
+      const response = await createQuestion(data);
+      if (response.status == 201) {
+        const {id}=await response.json();
+        setQuestionId(id);
+        setSave("Saved !");
+      } else {
+        setSave("Save");
+      }
+    }
+  }
+  useEffect(() => {
+    switch (answerType) {
+      case "multi":
+        setQuestionComponent(<RatioList setData={setData} type="multi" />);
+        break;
+      case "text":
+        setQuestionComponent(
+          <>
+            <p>Answer Text </p>
+            <div className="flex w-full justify-between gap-x-4">
+              <TextInputLegend ref={textAnswerEnRef} placeholder={"Answer"} />
+              <TextInputLegend
+                dir="rtl"
+                ref={textAnswerFaRef}
+                placeholder={"پاسخ"}
+              />
+            </div>
+          </>,
+        );
+        break;
+      //cast "one"
+      default:
+        setQuestionComponent(<RatioList setData={setData} type="one" />);
+        break;
+    }
+  }, [answerType]);
+
   return (
     <motion.div
       transition={{ duration: 0.7 }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="flex  w-full flex-col justify-start  rounded-xl border border-zinc-700 bg-zinc-900"
+      className="relative flex   w-full flex-col justify-start  rounded-xl border border-zinc-700 bg-zinc-900 "
     >
-      <div className="flex min-h-16 items-center justify-between border-b border-b-zinc-700 p-4">
+      <div className=" sticky -top-4 flex min-h-16 items-center justify-between rounded-lg border-b border-b-zinc-700 bg-zinc-900 p-4">
         <ButtonBack />
         <span className="text-lg">Add New Question</span>
-        <Button text="Save" className="bg-sky-500 text-gray-50" />
+        <Button
+          text={save}
+          onClick={saveQuestion}
+          className="bg-sky-500 text-gray-50"
+        />
       </div>
       <form className="flex w-full flex-col items-start justify-start gap-y-8 px-20 py-4">
         <p className="my-4">General Information</p>
@@ -32,34 +119,30 @@ function CreateQuestion() {
             rows={5}
             tab={"Question Description (En)"}
             id={"descriptionEn"}
+            ref={descriptionEnRef}
+            onChange={setDescriptionEn}
           />
           <TextArea
             rows={5}
             tab={" توضیحات سوال(Fa)"}
             id={"descriptionFa"}
             dir={"rtl"}
+            ref={descriptionFaRef}
+            onChange={setDescriptionFa}
           />
         </div>
         <p className="my-4">Answer Type </p>
-        <div className="flex flex-col  items-start justify-start gap-4 w-full">
-         <RatioGroup  className="w-fit"
+        <div className="flex w-full  flex-col items-start justify-start gap-4">
+          <RatioGroup
+            className="w-fit"
             value={answerType}
-            setValue={setAnswerType}>
-         <RatioButton
-            id={"one"}
-            text="One"
-           
-          />
-          <RatioButton
-            id={"multi"}
-            text="Multi"
-          />
-          <RatioButton
-            id={"text"}
-            text="Text"
-          />
-         </RatioGroup>
-        {questionComponent}
+            setValue={setAnswerType}
+          >
+            <RatioButton id={"one"} text="One" />
+            <RatioButton id={"multi"} text="Multi" />
+            <RatioButton id={"text"} text="Text" />
+          </RatioGroup>
+          {questionComponent}
         </div>
       </form>
     </motion.div>

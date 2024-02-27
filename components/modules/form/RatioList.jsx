@@ -1,16 +1,46 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import RatioGroup from "./RatioGroup";
 import RatioButton from "./RatioButton";
 import TextInputLegend from "./TextInputLegend";
 import Button from "./Button";
-
-function RatioList() {
+function RatioList({type="one" ,setData}) {
   const [listItems, setListItems] = useState([]);
-  const [answerId, setAnswerId] = useState(false);
+  const [answersIndex, setAnswersId] = useState([]);
   const answerTextEnRef = useRef(null);
   const answerTextFaRef = useRef(null);
-
+  const lastIdRef=useRef(0);
   const [clearTexts, setClearTexts] = useState(false);
+  useEffect(()=>{
+   setParentData();
+  },[lastIdRef,answersIndex,listItems]);
+  function setParentData(){
+    if(type==="one"||type==="multi")
+    {
+      setData({
+        type,
+        answersIndex,
+        listItems,
+      })
+    }else if(type==="text"){
+      setData({
+        type
+      })
+    }
+  }
+  
+  function selectItemHandler(id){
+    
+    if(type=="multi"){
+      const answerIndex=  answersIndex.findIndex(item=>item==id);
+      if(answerIndex==-1){
+        setAnswersId([...answersIndex,id]);
+      }else {
+        setAnswersId([...answersIndex.toSpliced(answerIndex,1)])
+      }
+    }else if(type==="one"){
+      setAnswersId([id])
+    }
+  }
   function addItemHandler() {
     if (
       answerTextFaRef.current.value.trim().length == 0 ||
@@ -18,7 +48,8 @@ function RatioList() {
     ) {
       return;
     }
-    const id = listItems.length;
+    const id = lastIdRef.current;
+    lastIdRef.current+=1;
     setListItems([
       ...listItems,
       {
@@ -35,9 +66,7 @@ function RatioList() {
       return item.id!==id;
     }))
   }
-  useEffect(() => {
-    console.log(listItems);
-  }, [listItems]);
+
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex grow justify-between">
@@ -48,23 +77,24 @@ function RatioList() {
       <div className="flex w-full flex-row-reverse justify-between">
         <RatioGroup
           className="flex flex-col items-end gap-y-4"
-          value={answerId}
-          setValue={setAnswerId}
+          value={answersIndex}
+          setValue={selectItemHandler}
         >
-          {listItems?.map((item) => {
+          {listItems?.map((item,i) => {
             return (
               <RatioButton
                 id={item.id}
-                text={answerId == item.id ? "correct" : "wrong"}
-                className={answerId == item.id ? "" : "bg-red-500"}
-              />
+                text={answersIndex?.findIndex(answer=>answer==item.id)!==-1 ? "correct" : "wrong"}
+                className={answersIndex?.findIndex(answer=>answer==item.id)!==-1 ? "" : "bg-red-500"}
+              key={i}
+                />
             );
           })}
         </RatioGroup>
         <div className="flex w-full flex-col gap-4 px-4">
-          {listItems?.map((item) => {
+          {listItems?.map((item,i) => {
             return (
-              <div className="group relative flex h-12 w-full items-center justify-start gap-x-8">
+              <div key={i} className="group relative flex h-12 w-full items-center justify-start gap-x-8">
                 <span> {item.answerEn}</span>
                 <span> {item.answerFa}</span>
                 <span

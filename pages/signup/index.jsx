@@ -1,6 +1,6 @@
 import Button from "@/components/modules/form/Button";
 import TextInput from "@/components/modules/form/TextInput";
-import { API_ADDRESS } from "@/constants/adresses";
+import { API_ADDRESS } from "@/constants/config";
 import { verifyToken } from "@/utils/auth";
 import { useRouter } from "next/router";
 import { useReducer } from "react";

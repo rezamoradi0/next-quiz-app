@@ -1,13 +1,16 @@
 import mongoose from "mongoose";
 
 const schema = mongoose.Schema({
-  subject: String,
-  description: String,
-  answerType: Number,
-  image: String,
+
+  answerType: String,
+  descriptionEn: String,
+  descriptionFa: String,
+  answersArray:String,
+  answersIndex:String,
+  answerTextEn:String,
+  answerTextFa:String,
   authorId: String,
-  lessonId:String
 });
 
-const model = mongoose.models.Questions || mongoose.model("Question", schema);
+const model = mongoose.models?.Question || mongoose.model("Question", schema);
 export default model;

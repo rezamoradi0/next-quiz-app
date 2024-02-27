@@ -13,7 +13,7 @@ export default async function handler(req, res) {
         JSON.stringify(
           await UserModel.findOne(
             { email: userInfo.email },
-            "-_id email password",
+            "-_id email password role",
           ),
         ),
       );
@@ -25,7 +25,7 @@ export default async function handler(req, res) {
         userData.password,
       );
       if (isTruePassword) {
-        const newToken = generateToken({ email: userInfo.email });
+        const newToken = generateToken({ email: userInfo.email,role:userData.role });
         return res
           .setHeader(
             "Set-Cookie",
