@@ -12,6 +12,7 @@ import { useRouter } from "next/router";
 import CreateCourse from "@/components/templates/createItems/CreateCourse";
 import PopupFull from "@/components/modules/popup/PopupFull";
 import CreateQuestion from "@/components/templates/createItems/CreateQuestion";
+import CreateDescription from "@/components/templates/createItems/CreateDescription";
 
 const variantsDescription = {
   open: { opacity: [0, 0.4, 1] },
@@ -32,6 +33,7 @@ function AdminPanel({ userData, menuData }) {
       return !lastState;
     });
   }
+
   useEffect(() => {
     const { create } = router.query;
     switch (create) {
@@ -42,13 +44,20 @@ function AdminPanel({ userData, menuData }) {
           </PopupFull>,
         );
         break;
-      case "question":
-        setCreateComponent(
-          <PopupFull>
-            <CreateQuestion />
-          </PopupFull>,
-        );
-        break;
+        case "question":
+          setCreateComponent(
+            <PopupFull>
+              <CreateQuestion />
+            </PopupFull>,
+          );
+          break;
+          case "description":
+            setCreateComponent(
+              <PopupFull>
+                <CreateDescription />
+              </PopupFull>,
+            );
+            break;
       default:
         setCreateComponent(null);
         break;
@@ -139,7 +148,8 @@ export async function getServerSideProps(context) {
         { name: "Levels", queryAddress: "create=level", index: 1 },
         { name: "Lessons", queryAddress: "create=lesson", index: 2 },
         { name: "Question", queryAddress: "create=question", index: 3 },
-        { name: "Users", queryAddress: "create=user", index: 4 },
+        { name: "Description", queryAddress: "create=description", index: 4 },
+        { name: "Users", queryAddress: "create=user", index: 5 },
       ],
     },
   };

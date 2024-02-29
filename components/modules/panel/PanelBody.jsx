@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getItems } from "@/api/services/adminServices";
 import PanelQuestionItem from "./PanelQuestionItem";
 import Button from "../form/Button";
+import {PanelBodyProvider} from "@/context/PanelBodyContext";
 function PanelBody({ panelData }) {
   const router = useRouter();
   const [listItems, setListItems] = useState(panelData?.data || []);
@@ -32,30 +33,37 @@ function PanelBody({ panelData }) {
       console.log("SomeThing is Wrong ");
     }
   }
-  
+
   useEffect(() => {
     getPanelItems();
   }, [panelData.name, getUpdateTrigger]);
 
   return (
-    <>
-      <div className="flex w-full justify-between">
-        <ButtonAddPanelItem
-          onClick={newItemHandler}
-          text={panelData?.name || "Item"}
-        />
-        <Button onClick={()=>{setGetUpdateTrigger(!getUpdateTrigger)}} text="Reload"/>
-      </div>
-      <div className="w-1/3">
-        {listItems?.map((item, i) => {
-          if (panelData?.name.toLowerCase() === "question") {
-            return <PanelQuestionItem  item={item} key={i} />;
-          } else {
-            return <PanelItem data={item} key={i} text={item.name} />;
-          }
-        })}
-      </div>
-    </>
+    <PanelBodyProvider getPanelItems={getPanelItems}>
+     
+        <div className="flex w-full justify-between">
+          <ButtonAddPanelItem
+            onClick={newItemHandler}
+            text={panelData?.name || "Item"}
+          />
+          <Button
+            onClick={() => {
+              setGetUpdateTrigger(!getUpdateTrigger);
+            }}
+            text="Reload"
+          />
+        </div>
+        <div className="w-1/2">
+          {listItems?.map((item, i) => {
+            if (panelData?.name.toLowerCase() === "question") {
+              return <PanelQuestionItem item={item} key={i} />;
+            } else {
+              return <PanelItem data={item} key={i} text={item.name} />;
+            }
+          })}
+        </div>
+      
+    </PanelBodyProvider>
   );
 }
 

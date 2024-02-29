@@ -4,10 +4,11 @@ const TextInputLegend=forwardRef(function  TextInputLegend({
   placeholder = "placeholder",
   dir = "ltr",
   callback,
+  value,
   clear=""
 },ref) {
   // const inputRef = useRef(ref);
-  const [text, setText] = useState("");
+  const [text, setText] = useState(value||"");
   const [isFocus, setIsFocus] = useState(false);
   const clickHandler=useCallback(()=> {
     ref.current.focus();

@@ -10,6 +10,7 @@ const schema = mongoose.Schema({
   answerTextEn:String,
   answerTextFa:String,
   authorId: String,
+  tag:String,
 });
 
 const model = mongoose.models?.Question || mongoose.model("Question", schema);

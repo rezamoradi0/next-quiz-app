@@ -1,10 +1,10 @@
 import { API_ADDRESS } from "@/constants/config";
 
-const createQuestion = async (data) => {
+const createItem = async (data, itemType) => {
   try {
-    const response = await fetch(`${API_ADDRESS}/admin/items/questions`, {
+    const response = await fetch(`${API_ADDRESS}/admin/items/singleItem`, {
       method: "POST",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, itemType }),
       headers: { "Content-Type": "application/json" },
     });
     return response;
@@ -12,11 +12,11 @@ const createQuestion = async (data) => {
     console.log(err.message);
   }
 };
-const updateQuestion = async (data) => {
+const updateItem = async (data, itemType) => {
   try {
-    const response = await fetch(`${API_ADDRESS}/admin/items/questions`, {
+    const response = await fetch(`${API_ADDRESS}/admin/items/singleItem`, {
       method: "PUT",
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, itemType }),
       headers: { "Content-Type": "application/json" },
     });
     return response;
@@ -24,15 +24,27 @@ const updateQuestion = async (data) => {
     console.log(err.message);
   }
 };
-const getItems = async (queryAddress, pageNumber = 1,limit=5) => {
- try{
-  const response = await fetch(
-    `${API_ADDRESS}/admin/items?type=${queryAddress}&page=${pageNumber}&limit=${limit}`,
-  );
-
-  return response;
- }catch(err){
-  return err.message;
- }
+const deleteItem = async (itemType, itemId) => {
+  try {
+    const response = await fetch(`${API_ADDRESS}/admin/items/singleItem`, {
+      method: "DELETE",
+      body: JSON.stringify({ itemType, itemId }),
+      headers: { "Content-Type": "application/json" },
+    });
+    return response;
+  } catch (error) {
+    console.log("deleteItem  : ", error.message);
+  }
 };
-export { createQuestion, updateQuestion, getItems };
+const getItems = async (queryAddress, pageNumber = 1, limit = 5) => {
+  try {
+    const response = await fetch(
+      `${API_ADDRESS}/admin/items?type=${queryAddress}&page=${pageNumber}&limit=${limit}`,
+    );
+
+    return response;
+  } catch (err) {
+    return err.message;
+  }
+};
+export { createItem, updateItem, getItems,deleteItem };
