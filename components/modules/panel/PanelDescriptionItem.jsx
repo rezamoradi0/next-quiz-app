@@ -1,8 +1,8 @@
-import CreateQuestion from "@/components/templates/createItems/CreateQuestion";
+import CreateDescription from "@/components/templates/createItems/CreateDescription";
 import { useState } from "react";
 import PopupFull from "../popup/PopupFull";
 import { usePanelBody } from "@/context/PanelBodyContext";
-function PanelQuestionItem({ item }) {
+function PanelDescriptionItem({ item }) {
   const [open, setOpen] = useState(false);
   const {getPanelItems}=usePanelBody();
   function backHandler() {
@@ -15,7 +15,7 @@ function PanelQuestionItem({ item }) {
         onClick={() => {
           setOpen((perv) => !perv);
         }}
-        className="group  w-full cursor-pointer rounded-xl bg-transparent p-4 
+        className="group w-full cursor-pointer rounded-xl bg-transparent p-4
      font-medium text-gray-50 transition-all duration-500 hover:bg-blue-500 hover:pl-8"
       >
         <span className="flex flex-col ">
@@ -36,11 +36,11 @@ function PanelQuestionItem({ item }) {
       </div>
       {open && (
         <PopupFull>
-          <CreateQuestion defaultData={item} backOnClick={backHandler} onDeleteItem={getPanelItems}/>
+          <CreateDescription defaultData={item} backOnClick={backHandler} onDeleteItem={getPanelItems}/>
         </PopupFull>
       )}
     </>
   );
 }
 
-export default PanelQuestionItem;
+export default PanelDescriptionItem;

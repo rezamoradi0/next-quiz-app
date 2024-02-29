@@ -140,7 +140,7 @@ function CreateQuestion({ defaultData, backOnClick ,onDeleteItem}) {
       transition={{ duration: 0.7 }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
-      className="relative flex   w-full flex-col justify-start  rounded-xl border border-zinc-700 bg-zinc-900 "
+      className=" relative flex   w-full flex-col justify-start  rounded-xl border border-zinc-700 bg-zinc-900"
     >
       <div className=" sticky -top-4 z-10 flex min-h-16 items-center justify-between rounded-lg border-b border-b-zinc-700 bg-zinc-900 p-4">
         {backOnClick ? (

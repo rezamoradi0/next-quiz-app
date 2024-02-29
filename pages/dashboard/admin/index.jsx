@@ -47,7 +47,7 @@ function AdminPanel({ userData, menuData }) {
         case "question":
           setCreateComponent(
             <PopupFull>
-              <CreateQuestion />
+              <CreateQuestion  />
             </PopupFull>,
           );
           break;
