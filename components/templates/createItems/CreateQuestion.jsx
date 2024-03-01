@@ -15,7 +15,6 @@ import {
 // قرار بود تمیز باشه :/
 
 function CreateQuestion({ defaultData, backOnClick ,onDeleteItem}) {
-
   const [answerType, setAnswerType] = useState(
     defaultData?.answerType || "one",
   );
@@ -32,6 +31,7 @@ function CreateQuestion({ defaultData, backOnClick ,onDeleteItem}) {
     defaultData?.descriptionFa || "",
   );
   const [tag, setTag] = useState(defaultData?.tag || "");
+  console.log(tag);
   const tagRef = useRef();
   const [save, setSave] = useState("Save");
   const dataRef = useRef({});
@@ -173,8 +173,9 @@ function CreateQuestion({ defaultData, backOnClick ,onDeleteItem}) {
         </div>
         <TextInputLegend
           ref={tagRef}
-          callback={setTag}
           value={tag}
+          callback={setTag}
+    
           placeholder={"Tag"}
         />
         <div className="flex w-full  items-center  gap-x-4">
