@@ -6,11 +6,14 @@ import { getItems } from "@/api/services/adminServices";
 import PanelQuestionItem from "./PanelQuestionItem";
 import Button from "../form/Button";
 import {PanelBodyProvider} from "@/context/PanelBodyContext";
+import Pagination from "../pagination/Pagination";
 function PanelBody({ panelData }) {
   const router = useRouter();
   const [listItems, setListItems] = useState(panelData?.data || []);
   const [listPageNumber, setListPageNumber] = useState(1);
   const [getUpdateTrigger, setGetUpdateTrigger] = useState(false);
+
+  const [lastPageNumber,setLastPageNumber]=useState(1);
   function newItemHandler() {
     router.push(`?${panelData.queryAddress}`);
   }
@@ -18,8 +21,10 @@ function PanelBody({ panelData }) {
     setListItems([]);
     const response = await getItems(panelData.name, listPageNumber);
     const data = await response.json();
+  
     if (response.status == 200) {
-      const arrayOfChildren = Object.values(data);
+      setLastPageNumber(data.pageNumber);
+      const arrayOfChildren = Object.values(data.items);
       setListItems(
         arrayOfChildren.map((item) => {
           let newItem = item;
@@ -28,7 +33,7 @@ function PanelBody({ panelData }) {
           return newItem;
         }),
       );
-      console.log(arrayOfChildren);
+   
     } else {
       console.log("SomeThing is Wrong ");
     }
@@ -36,7 +41,7 @@ function PanelBody({ panelData }) {
 
   useEffect(() => {
     getPanelItems();
-  }, [panelData.name, getUpdateTrigger]);
+  }, [panelData.name, getUpdateTrigger,listPageNumber]);
 
   return (
     <PanelBodyProvider getPanelItems={getPanelItems}>
@@ -46,6 +51,7 @@ function PanelBody({ panelData }) {
             onClick={newItemHandler}
             text={panelData?.name || "Item"}
           />
+          <Pagination lastPage={lastPageNumber} onChange={setListPageNumber}  className={"ml-auto mr-2"} />
           <Button
             onClick={() => {
               setGetUpdateTrigger(!getUpdateTrigger);

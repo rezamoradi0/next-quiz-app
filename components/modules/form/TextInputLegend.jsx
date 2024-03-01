@@ -19,10 +19,10 @@ const TextInputLegend=forwardRef(function  TextInputLegend({
       callback(text);
     }
   }, [text]);
-  useEffect(()=>{
-    // setText("");
-  },[clear])
-  console.log(value);
+  // useEffect(()=>{
+  //   // setText("");
+  // },[clear])
+  // console.log(value);
   return (
     <div
       dir={dir}

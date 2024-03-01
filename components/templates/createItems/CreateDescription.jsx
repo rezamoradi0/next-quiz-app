@@ -1,5 +1,5 @@
 import TextArea from "@/components/modules/form/TextArea";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import ButtonBack from "@/components/modules/form/ButtonBack";
 import Button from "@/components/modules/form/Button";
@@ -11,7 +11,11 @@ function CreateDescription({ defaultData, backOnClick, onDeleteItem }) {
   const [textFa, setTextFa] = useState(defaultData?.textFa || "");
   const tagRef = useRef();
   const [tag, setTag] = useState(defaultData?.tag || "");
+  const [save,setSave]=useState("Save");
 
+useEffect(()=>{
+  setSave("Save");
+},[textEn,textFa,tag])
   return (
     <motion.div
       transition={{ duration: 0.7 }}
