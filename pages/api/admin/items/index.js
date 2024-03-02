@@ -24,13 +24,13 @@ export default async function handler(req, res) {
           const pageNumber = getPageNumber(allCount,limit);
           const questionList = await QuestionModel.find({}, null, {
             skip: Number(page - 1) * limit,
-          }).limit(limit);
+          }).sort( { _id: -1 }).limit(limit);
 
           return res.status(200).json({ items:[...questionList], pageNumber });
         case "course":
           const courseList = await CourseModel.find({}, null, {
             skip: Number(page - 1) * limit,
-          }).limit(limit);
+          }).sort( { length: -1 }).limit(limit);
           return res.status(200).json({ ...courseList });
 
         default:
