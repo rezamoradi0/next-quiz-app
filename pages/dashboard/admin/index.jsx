@@ -100,7 +100,7 @@ function AdminPanel({ userData, menuData }) {
         transition={{ duration: 2 }}
         className="flex w-full flex-col gap-4"
       >
-        <PanelBody panelData={menuDataState[selectedMenu]} />
+        {<PanelBody panelData={menuDataState[selectedMenu]} />}
       </motion.div>
       {createComponent || <></>}
     </main>

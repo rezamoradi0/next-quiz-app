@@ -3,12 +3,13 @@ import Button from "../form/Button";
 import { useEffect, useState } from "react";
 
 function Pagination({
-  defaultPage = 1,
-  lastPage = 1,
+  defaultPage,
+  lastPage,
   onChange,
   className = "",
 }) {
-  const [pageNumber, setPageNumber] = useState(defaultPage);
+  const [pageNumber, setPageNumber] = useState(defaultPage||1);
+
   function onChangeHandler(count) {
     if ((pageNumber > 1 && count < 0) || (pageNumber < lastPage && count > 0)) {
       setPageNumber((perv) => {
@@ -17,6 +18,12 @@ function Pagination({
     }
   }
   useEffect(()=>{
+    if(pageNumber>lastPage){
+      setPageNumber(1);
+    }
+  },[lastPage]);
+  useEffect(()=>{
+
     onChange(pageNumber);
    
   },[pageNumber])
@@ -29,7 +36,7 @@ function Pagination({
           onChangeHandler(-1);
         }}
       />
-      {pageNumber}
+      {pageNumber } PageNumber
       <Button
         className={`${pageNumber===lastPage?"bg-gray-500":""} mx-2 h-fit p-1 text-sm`}
         text="next"

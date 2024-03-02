@@ -8,6 +8,7 @@ import Button from "../form/Button";
 import {PanelBodyProvider} from "@/context/PanelBodyContext";
 import Pagination from "../pagination/Pagination";
 function PanelBody({ panelData }) {
+
   const router = useRouter();
   const [listItems, setListItems] = useState(panelData?.data || []);
   const [listPageNumber, setListPageNumber] = useState(1);
@@ -35,6 +36,7 @@ function PanelBody({ panelData }) {
       );
    
     } else {
+      setLastPageNumber(1);
       console.log("SomeThing is Wrong ");
     }
   }
