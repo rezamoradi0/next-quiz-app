@@ -21,12 +21,10 @@ function PanelQuestionItem({ item }) {
         <span className="flex flex-col ">
           <div className="flex flex-col items-start ">
             <p>Tag : {item.tag}</p>
-            <span className="mx-2 inline-block h-0 w-px transition-all  duration-100 group-hover:h-1 group-hover:duration-500"></span>
        
             <p className=" overflow-clip text-ellipsis whitespace-nowrap max-w-full">
               Description : {item.descriptionEn}
             </p>
-            <span className="mx-2 inline-block h-0 w-px transition-all duration-100 group-hover:h-1 group-hover:duration-500"></span>
             <p>AnswerType : {item.answerType} </p>
     
           </div>

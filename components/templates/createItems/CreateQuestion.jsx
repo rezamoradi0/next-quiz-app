@@ -14,29 +14,34 @@ import {
 } from "@/api/services/adminServices";
 // قرار بود تمیز باشه :/
 
-function CreateQuestion({ defaultData, backOnClick ,onDeleteItem}) {
-  const [answerType, setAnswerType] = useState(
-    defaultData?.answerType || "one",
-  );
-  const [questionComponent, setQuestionComponent] = useState();
+function CreateQuestion({ defaultData, backOnClick, onDeleteItem }) {
   const textAnswerFaRef = useRef(null);
   const textAnswerEnRef = useRef(null);
   const descriptionEnRef = useRef(null);
   const descriptionFaRef = useRef(null);
+  const dataRef = useRef({});
+  const tagRef = useRef();
 
+  // Replace with Reducer Please
+  const [questionComponent, setQuestionComponent] = useState();
+  const [save, setSave] = useState("Save");
+  const [tag, setTag] = useState(defaultData?.tag || "");
+  const [answerType, setAnswerType] = useState(
+    defaultData?.answerType || "one",
+  );
   const [descriptionEn, setDescriptionEn] = useState(
     defaultData?.descriptionEn || "",
   );
   const [descriptionFa, setDescriptionFa] = useState(
     defaultData?.descriptionFa || "",
   );
-  const [tag, setTag] = useState(defaultData?.tag || "");
-  console.log(tag);
-  const tagRef = useRef();
-  const [save, setSave] = useState("Save");
-  const dataRef = useRef({});
-
   const [questionId, setQuestionId] = useState(defaultData?._id || false);
+  const [textAnswerEn, setTextAnswerEn] = useState(
+    defaultData?.answerTextEn || "",
+  );
+  const [textAnswerFa, setTextAnswerFa] = useState(
+    defaultData?.answerTextFa || "",
+  );
   useEffect(() => {
     setSave("Save");
   }, [descriptionFa, descriptionEn, answerType]);
@@ -48,10 +53,11 @@ function CreateQuestion({ defaultData, backOnClick ,onDeleteItem}) {
     const response = await deleteItem("question", questionId);
     if (response.status != 200) {
       alert("Error On Deleted  : question");
-    }else {
-     if(onDeleteItem){ onDeleteItem(); }
+    } else {
+      if (onDeleteItem) {
+        onDeleteItem();
+      }
       backOnClick();
-
     }
   }
   async function saveQuestion() {
@@ -110,11 +116,18 @@ function CreateQuestion({ defaultData, backOnClick ,onDeleteItem}) {
           <>
             <p>Answer Text </p>
             <div className="flex w-full justify-between gap-x-4">
-              <TextInputLegend ref={textAnswerEnRef} placeholder={"Answer"} />
+              <TextInputLegend
+                ref={textAnswerEnRef}
+                placeholder={"Answer"}
+                value={textAnswerEn}
+                callback={setTextAnswerEn}
+              />
               <TextInputLegend
                 dir="rtl"
                 ref={textAnswerFaRef}
                 placeholder={"پاسخ"}
+                value={textAnswerFa}
+                callback={setTextAnswerFa}
               />
             </div>
           </>,
@@ -175,7 +188,6 @@ function CreateQuestion({ defaultData, backOnClick ,onDeleteItem}) {
           ref={tagRef}
           value={tag}
           callback={setTag}
-    
           placeholder={"Tag"}
         />
         <div className="flex w-full  items-center  gap-x-4">

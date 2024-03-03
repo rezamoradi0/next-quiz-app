@@ -7,8 +7,7 @@ export default async function handler(req, res) {
     const { token } = req.cookies;
     const userData = verifyToken(token);
     if (userData.role === "ADMIN") {
-      const questionData = req.body;
-      console.log(questionData);
+      const itemData = req.body;
       try {
         connectToDb();
         const adminInfo = await UserModel.findOne(
@@ -16,15 +15,23 @@ export default async function handler(req, res) {
           "",
         );
         if (!adminInfo) return res.status(503).json();
+          switch (itemData.itemType) {
+            case "question":
+              const questionCreateRes = await QuestionModel.create({
+                ...itemData,
+                authorId: adminInfo._id,
+              });
+              return res
+              .status(201)
+              .json({ ...itemData, id: questionCreateRes._id });
+           
+          
+            default:
+              break;
+          }
+          
 
-        const questionCreateRes = await QuestionModel.create({
-          ...questionData,
-          authorId: adminInfo._id,
-        });
 
-        return res
-          .status(201)
-          .json({ ...questionData, id: questionCreateRes._id });
       } catch (err) {
         console.log("HERE error", err.message);
         return res.status(500).json({ message: err.message });

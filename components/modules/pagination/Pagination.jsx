@@ -36,7 +36,7 @@ function Pagination({
           onChangeHandler(-1);
         }}
       />
-      {pageNumber } PageNumber
+      {pageNumber }
       <Button
         className={`${pageNumber===lastPage?"bg-gray-500":""} mx-2 h-fit p-1 text-sm`}
         text="next"

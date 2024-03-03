@@ -9,7 +9,7 @@ function RatioList({type="one" ,setData,defaultListItems,defaultAnswers,lastId})
   const answerTextEnRef = useRef(null);
   const answerTextFaRef = useRef(null);
   const lastIdRef=useRef(lastId||0);
-  const [clearTexts, setClearTexts] = useState(false);
+  const [clearTexts, setClearTexts] = useState(0);
   useEffect(()=>{
    setParentData();
   },[lastIdRef,answersIndex,listItems]);
@@ -59,7 +59,7 @@ function RatioList({type="one" ,setData,defaultListItems,defaultAnswers,lastId})
       },
     ]);
 
-    setClearTexts((perv) => !perv);
+     setClearTexts((perv) => perv+1 );
   }
   function removerItemHandler(id) {
     setListItems(listItems.filter((item)=>{
@@ -115,13 +115,14 @@ function RatioList({type="one" ,setData,defaultListItems,defaultAnswers,lastId})
           <TextInputLegend
             placeholder="Answer"
             ref={answerTextEnRef}
-            clear={clearTexts}
+           clear={clearTexts}
           />
           <TextInputLegend
             placeholder="پاسخ"
             ref={answerTextFaRef}
             dir="rtl"
             clear={clearTexts}
+
           />
           <Button text="+ Add" onClick={addItemHandler} />
         </div>
