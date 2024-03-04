@@ -12,8 +12,10 @@ import {
   updateItem,
   deleteItem,
 } from "@/api/services/adminServices";
-// قرار بود تمیز باشه :/
+import { usePanelBody } from "@/context/PanelBodyContext";
 
+// قرار بود تمیز باشه :/
+// قرار بود با ردیوسر تمیز تر از استیت باشه :/
 function reducer(state, action) {
   switch (action.type) {
     case "defaultData":
@@ -38,14 +40,15 @@ function reducer(state, action) {
   }
 }
 
-function CreateQuestion({ defaultData, backOnClick, onDeleteItem }) {
+function CreateQuestion({ defaultData, backOnClick }) {
+  const { getPanelItems } = usePanelBody();
+
   const textAnswerFaRef = useRef(null);
   const textAnswerEnRef = useRef(null);
   const descriptionEnRef = useRef(null);
   const descriptionFaRef = useRef(null);
   const dataRef = useRef({});
   const tagRef = useRef();
-
   const initialState = {
     questionId: null,
     tag: "test",
@@ -54,15 +57,12 @@ function CreateQuestion({ defaultData, backOnClick, onDeleteItem }) {
     descriptionFa: "",
     answerTextEn: "",
     answerTextFa: "",
-    answersArray:null,
-    answersIndex:""
-
+    answersArray: null,
+    answersIndex: "",
+    authorId: "",
   };
   const [state, dispatch] = useReducer(reducer, initialState);
-  // Replace with Reducer Please
-  const [questionComponent, setQuestionComponent] = useState();
   const [save, setSave] = useState("Save");
-
 
   useEffect(() => {
     setSave("Save");
@@ -76,10 +76,10 @@ function CreateQuestion({ defaultData, backOnClick, onDeleteItem }) {
     if (response.status != 200) {
       alert("Error On Deleted  : question");
     } else {
-      if (onDeleteItem) {
-        onDeleteItem();
+      getPanelItems();
+      if (backOnClick) {
+        backOnClick();
       }
-      backOnClick();
     }
   }
   async function saveQuestion() {
@@ -102,7 +102,8 @@ function CreateQuestion({ defaultData, backOnClick, onDeleteItem }) {
       data.answersIndex = JSON.stringify(dataRef.current.answersIndex);
     }
     if (state.questionId) {
-      data.questionId = state.questionId;
+      data.id = state.questionId;
+      data.authorId = state.authorId;
       const response = await updateItem(data, "question");
       if (response.status == 200) {
         setSave("Updated !");
@@ -123,8 +124,10 @@ function CreateQuestion({ defaultData, backOnClick, onDeleteItem }) {
 
   useEffect(() => {
     if (defaultData) {
-      console.log(defaultData.answersArray);
-      dispatch({ type: "defaultData", payload: defaultData });
+      dispatch({
+        type: "defaultData",
+        payload: { ...defaultData, questionId: defaultData._id },
+      });
     }
   }, [defaultData]);
   return (
@@ -240,13 +243,15 @@ function CreateQuestion({ defaultData, backOnClick, onDeleteItem }) {
               lastId={state.answersArray?.length}
             />
           )}
-          { state.answerType === "one" &&  <RatioList
-            setData={setData}
-            type="one"
-            defaultAnswers={state.answersIndex}
-            defaultListItems={state.answersArray}
-            lastId={state.answersArray?.length}
-          />}
+          {state.answerType === "one" && (
+            <RatioList
+              setData={setData}
+              type="one"
+              defaultAnswers={state.answersIndex}
+              defaultListItems={state.answersArray}
+              lastId={state.answersArray?.length}
+            />
+          )}
         </div>
       </form>
     </motion.div>

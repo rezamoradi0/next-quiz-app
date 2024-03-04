@@ -7,7 +7,8 @@ import PanelQuestionItem from "./PanelQuestionItem";
 import Button from "../form/Button";
 import { PanelBodyProvider } from "@/context/PanelBodyContext";
 import Pagination from "../pagination/Pagination";
-function PanelBody({ panelData }) {
+import PanelDescriptionItem from "./PanelDescriptionItem";
+function PanelBody({ panelData ,children}) {
   const router = useRouter();
   const [listItems, setListItems] = useState(panelData?.data || []);
   const [listPageNumber, setListPageNumber] = useState(1);
@@ -39,7 +40,17 @@ function PanelBody({ panelData }) {
             }),
           );
           break;
-
+        case "description":
+          setListItems(
+            arrayOfChildren.map((item) => {
+              let newItem = item;
+              newItem.textEn = newItem.textEn || null;
+              newItem.textFa = newItem.textFa || null;
+              newItem.tag = newItem.tag || null;
+              return newItem;
+            }),
+          );
+          break;
         default:
           break;
       }
@@ -55,6 +66,7 @@ function PanelBody({ panelData }) {
 
   return (
     <PanelBodyProvider getPanelItems={getPanelItems}>
+      {children}
       <div className="flex w-full justify-between">
         <ButtonAddPanelItem
           onClick={newItemHandler}
@@ -76,6 +88,8 @@ function PanelBody({ panelData }) {
         {listItems?.map((item, i) => {
           if (panelData?.name.toLowerCase() === "question") {
             return <PanelQuestionItem item={item} key={i} />;
+          } else if (panelData?.name.toLowerCase() === "description") {
+            return <PanelDescriptionItem item={item} key={i} />;
           } else {
             return <PanelItem data={item} key={i} text={item.name} />;
           }

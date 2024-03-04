@@ -40,21 +40,21 @@ function AdminPanel({ userData, menuData }) {
       case "course":
         setCreateComponent(
           <PopupFull>
-            <CreateCourse />
+            <CreateCourse backOnClick={()=>{router.back()}}/>
           </PopupFull>,
         );
         break;
         case "question":
           setCreateComponent(
             <PopupFull>
-              <CreateQuestion  />
+              <CreateQuestion  backOnClick={()=>{router.back()}}/>
             </PopupFull>,
           );
           break;
           case "description":
             setCreateComponent(
               <PopupFull>
-                <CreateDescription />
+                <CreateDescription backOnClick={()=>{router.back()}}/>
               </PopupFull>,
             );
             break;
@@ -100,9 +100,11 @@ function AdminPanel({ userData, menuData }) {
         transition={{ duration: 2 }}
         className="flex w-full flex-col gap-4"
       >
-        {<PanelBody panelData={menuDataState[selectedMenu]} />}
+        {<PanelBody panelData={menuDataState[selectedMenu]}> 
+        {createComponent || <></>}
+        </PanelBody>}
       </motion.div>
-      {createComponent || <></>}
+ 
     </main>
   );
 }

@@ -1,10 +1,9 @@
 import CreateQuestion from "@/components/templates/createItems/CreateQuestion";
 import { useState } from "react";
 import PopupFull from "../popup/PopupFull";
-import { usePanelBody } from "@/context/PanelBodyContext";
 function PanelQuestionItem({ item }) {
   const [open, setOpen] = useState(false);
-  const {getPanelItems}=usePanelBody();
+
   function backHandler() {
     setOpen(false);
   }
@@ -34,7 +33,7 @@ function PanelQuestionItem({ item }) {
       </div>
       {open && (
         <PopupFull>
-          <CreateQuestion defaultData={item} backOnClick={backHandler} onDeleteItem={getPanelItems}/>
+          <CreateQuestion defaultData={item} backOnClick={backHandler} />
         </PopupFull>
       )}
     </>

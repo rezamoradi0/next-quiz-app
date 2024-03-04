@@ -1,14 +1,14 @@
 import CreateDescription from "@/components/templates/createItems/CreateDescription";
 import { useState } from "react";
 import PopupFull from "../popup/PopupFull";
-import { usePanelBody } from "@/context/PanelBodyContext";
+
 function PanelDescriptionItem({ item }) {
   const [open, setOpen] = useState(false);
-  const {getPanelItems}=usePanelBody();
+
   function backHandler() {
     setOpen(false);
   }
- 
+
   return (
     <>
       <div
@@ -24,10 +24,10 @@ function PanelDescriptionItem({ item }) {
             <span className="mx-2 inline-block h-0 w-px transition-all  duration-100 group-hover:h-1 group-hover:duration-500"></span>
        
             <p className=" overflow-clip text-ellipsis whitespace-nowrap max-w-full">
-              Description : {item.descriptionEn}
+            TextEn : {item.textEn}
             </p>
             <span className="mx-2 inline-block h-0 w-px transition-all duration-100 group-hover:h-1 group-hover:duration-500"></span>
-            <p>AnswerType : {item.answerType} </p>
+            <p>TextFa : {item.textFa} </p>
     
           </div>
 
@@ -36,7 +36,7 @@ function PanelDescriptionItem({ item }) {
       </div>
       {open && (
         <PopupFull>
-          <CreateDescription defaultData={item} backOnClick={backHandler} onDeleteItem={getPanelItems}/>
+          <CreateDescription defaultData={item} backOnClick={backHandler}/>
         </PopupFull>
       )}
     </>

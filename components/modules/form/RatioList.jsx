@@ -10,7 +10,6 @@ function RatioList({type="one" ,setData,defaultListItems,defaultAnswers,lastId})
   const answerTextFaRef = useRef(null);
   const lastIdRef=useRef(lastId||0);
   const [clearTexts, setClearTexts] = useState(0);
-  console.log(listItems);
   useEffect(()=>{
    setParentData();
   },[lastIdRef,answersIndex,listItems]);
@@ -71,7 +70,6 @@ function RatioList({type="one" ,setData,defaultListItems,defaultAnswers,lastId})
     setListItems(defaultListItems||[]);
     setAnswersId(defaultAnswers||[]);
   },[defaultListItems])
-console.log(answersIndex);
   return (
     <div className="flex w-full flex-col gap-2">
       <div className="flex grow justify-between">
@@ -129,7 +127,7 @@ console.log(answersIndex);
             clear={clearTexts}
 
           />
-          <Button text="+ Add" onClick={addItemHandler} />
+          <Button className="whitespace-nowrap" text="+ Add" onClick={addItemHandler} />
         </div>
       )}
     </div>

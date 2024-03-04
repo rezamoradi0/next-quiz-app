@@ -38,7 +38,7 @@ function Pagination({
       />
       {pageNumber }
       <Button
-        className={`${pageNumber===lastPage?"bg-gray-500":""} mx-2 h-fit p-1 text-sm`}
+        className={`${pageNumber===lastPage||pageNumber>lastPage?"bg-gray-500":""} mx-2 h-fit p-1 text-sm`}
         text="next"
         onClick={() => {
           onChangeHandler(1);

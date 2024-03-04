@@ -1,5 +1,6 @@
 import QuestionModel from "@/models/Question";
 import UserModel from "@/models/User";
+import DescriptionModel from "@/models/Description";
 import connectToDb from "@/configs/db";
 import { verifyToken } from "@/utils/auth";
 export default async function handler(req, res) {
@@ -15,23 +16,28 @@ export default async function handler(req, res) {
           "",
         );
         if (!adminInfo) return res.status(503).json();
-          switch (itemData.itemType) {
-            case "question":
-              const questionCreateRes = await QuestionModel.create({
-                ...itemData,
-                authorId: adminInfo._id,
-              });
-              return res
+        switch (itemData.itemType) {
+          case "question":
+            const questionCreateRes = await QuestionModel.create({
+              ...itemData,
+              authorId: adminInfo._id,
+            });
+            return res
               .status(201)
               .json({ ...itemData, id: questionCreateRes._id });
-           
-          
-            default:
-              break;
-          }
-          
 
+          case "description":
+            const descriptionCreateRes = await DescriptionModel.create({
+              ...itemData,
+              authorId: adminInfo._id,
+            });
+            return res
+              .status(201)
+              .json({ ...itemData, id: descriptionCreateRes._id });
 
+          default:
+            res.status(404).json({ message: "NotFount this type " });
+        }
       } catch (err) {
         console.log("HERE error", err.message);
         return res.status(500).json({ message: err.message });
@@ -41,8 +47,8 @@ export default async function handler(req, res) {
     const { token } = req.cookies;
     const userData = verifyToken(token);
     if (userData.role === "ADMIN") {
-      const questionData = req.body;
-      console.log(questionData);
+      const itemData = req.body;
+      console.log(itemData);
       try {
         connectToDb();
         const adminInfo = await UserModel.findOne(
@@ -50,16 +56,32 @@ export default async function handler(req, res) {
           "",
         );
         if (!adminInfo) return res.status(503).json();
-        const questionCreateRes = await QuestionModel.findOneAndReplace(
-          {
-            _id: questionData.questionId,
-          },
-          {
-            ...questionData,
-          },
-        );
-
-        return res.status(200).json({ ...questionData });
+        switch (itemData.itemType) {
+          case "question":
+            await QuestionModel.findOneAndReplace(
+              {
+                _id: itemData.id,
+              },
+              {
+                ...itemData,
+              },
+            );
+            break;
+            case "description":
+              await DescriptionModel.findOneAndReplace(
+                {
+                  _id: itemData.id,
+                },
+                {
+                  ...itemData,
+                },
+              );
+              
+              break;
+          default:
+            return res.status(404).json({ ...itemData });
+        }
+        return res.status(200).json({ ...itemData });
       } catch (err) {
         console.log("HERE error", err.message);
         return res.status(500).json({ message: err.message });
@@ -71,7 +93,6 @@ export default async function handler(req, res) {
     if (userData.role === "ADMIN") {
       const itemData = req.body;
       try {
-    
         connectToDb();
         const adminInfo = await UserModel.findOne(
           { email: userData.email },
@@ -85,6 +106,11 @@ export default async function handler(req, res) {
         switch (itemData.itemType) {
           case "question":
             await QuestionModel.findOneAndDelete({
+              _id: itemData.itemId,
+            });
+            return res.status(200).json({ ...itemData });
+          case "description":
+            await DescriptionModel.findOneAndDelete({
               _id: itemData.itemId,
             });
             return res.status(200).json({ ...itemData });
