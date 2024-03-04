@@ -24,6 +24,11 @@ clear=false
     setText("")
    }
   },[clear])
+  useEffect(()=>{
+    if(value!==text){
+      setText(value);
+    }
+  },[value])
   // console.log(value);
   return (
     <div
