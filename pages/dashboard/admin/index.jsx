@@ -13,6 +13,7 @@ import CreateCourse from "@/components/templates/createItems/CreateCourse";
 import PopupFull from "@/components/modules/popup/PopupFull";
 import CreateQuestion from "@/components/templates/createItems/CreateQuestion";
 import CreateDescription from "@/components/templates/createItems/CreateDescription";
+import CreateLesson from "@/components/templates/createItems/CreateLesson";
 
 const variantsDescription = {
   open: { opacity: [0, 0.4, 1] },
@@ -58,6 +59,13 @@ function AdminPanel({ userData, menuData }) {
               </PopupFull>,
             );
             break;
+            case "lesson":
+              setCreateComponent( 
+                <PopupFull>
+                  <CreateLesson backOnClick={()=>{router.back()}}/>
+                </PopupFull>,
+              );
+              break;
       default:
         setCreateComponent(null);
         break;

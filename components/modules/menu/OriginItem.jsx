@@ -1,4 +1,4 @@
-function OriginItem({ item,onClickSend=true }) {
+function OriginItem({ item,onClickSend=true,itemType }) {
   return (
     <div
       onClick={()=>{
@@ -9,9 +9,12 @@ function OriginItem({ item,onClickSend=true }) {
       draggable
       onDragStart={(e) => e.dataTransfer.setData("text", JSON.stringify(item))}
       className=" cursor-pointer rounded-lg bg-zinc-700 px-4 py-2 transition-all
-       duration-500 hover:bg-zinc-600 hover:pl-12"
+       duration-500 hover:bg-zinc-600 hover:pl-12 w-full "
     >
-      {item.name}
+      {itemType==="question"&&<span>
+        question</span>}
+        {itemType==="description"&&<span>
+        description</span>}
     </div>
   );
 }

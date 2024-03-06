@@ -2,8 +2,9 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import TargetItem from "./TargetItem";
 import TargetPlace from "./TargetPlace";
 import PopupAlert from "../popup/PopupAlert";
+import { twMerge } from "tailwind-merge";
 
-function ItemsTarget({ dataArray = [], header }) {
+function ItemsTarget({ dataArray = [], header, className = "" }) {
   const [listArray, setListArray] = useState(dataArray);
   const [popup, setPopup] = useState(false);
   const dropHandler = useCallback(
@@ -62,7 +63,9 @@ function ItemsTarget({ dataArray = [], header }) {
     }
   }, [popup]);
   return (
-    <div className="flex w-full  grow flex-col rounded-lg border  border-zinc-800 p-4 pb-0 last:mb-12 ">
+    <div
+      className={`${twMerge("flex  w-full grow flex-col rounded-lg border  border-zinc-800 p-4 pb-0", className)}  `}
+    >
       {popup && <PopupAlert text={popup} />}
       <div>{header}</div>
       <div
@@ -72,25 +75,26 @@ function ItemsTarget({ dataArray = [], header }) {
         onDragOver={(e) => {
           e.preventDefault();
         }}
-        className="flex h-full grow flex-col gap-y-1"
+        className="flex h-full grow flex-col gap-y-1  border-b-red-500 pb-12"
       >
-        {listArray?.length>0&&listArray.map((item, i) => {
-          return (
-            < >
-              {" "}
-              <TargetPlace
-                index={i}
-                key={crypto.randomUUID()}
-                onDropHandler={dropHandler}
-              />
-              <TargetItem
-                key={crypto.randomUUID()}
-                item={item}
-                removeHandler={removeHandler}
-              />
-            </>
-          );
-        })}
+        {listArray?.length > 0 &&
+          listArray.map((item, i) => {
+            return (
+              <>
+                {" "}
+                <TargetPlace
+                  index={i}
+                  key={crypto.randomUUID()}
+                  onDropHandler={dropHandler}
+                />
+                <TargetItem
+                  key={crypto.randomUUID()}
+                  item={item}
+                  removeHandler={removeHandler}
+                />
+              </>
+            );
+          })}
       </div>
     </div>
   );
